@@ -1,0 +1,31 @@
+yaml
+name: API Test Automation
+on:
+  push:
+    branches:["main"]
+  pull request:
+    branches:["main"]
+
+jobs:
+  runs-on: ubuntu-lates
+  
+  env:
+    EMAIL_ADDRESS : ${{secrets.EMAIL_ADDRESS}}
+    APP_PASSWORD : ${{secrets.APP_PASSWORD}}
+  steps:
+    -name: Checkout du code
+     uses: actions/checkout@v3
+
+    -name: Setup Python
+     uses: actions/setup-python@v4
+     with:
+       python-version: "3.10"
+
+    -name: Installer les dépendances
+     run: |
+       pip install pytest pytest-html requests fakes
+    -name: Lancer les tests API avec pytest
+     run: pytest test_api_auto.py --html=report_api.html --self-contained-html
+
+    -name: Envoyer le rapport par email
+     run: python send_email.py
