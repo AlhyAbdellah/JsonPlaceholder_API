@@ -23,7 +23,8 @@ jobs:
 
     -name: Installer les dépendances
      run: |
-       pip install pytest pytest-html requests fakes
+       pip install -r requirements.txt
+       
     -name: Lancer les tests API avec pytest
      run: pytest test_api_auto.py --html=report_api.html --self-contained-html
 
